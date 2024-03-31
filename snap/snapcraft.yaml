@@ -1,0 +1,50 @@
+name: aria
+version: git
+summary: Dive into the interplanetary microblogging platform 🚀
+description: |
+  Aria is a client for Misskey, a federated social media platform.
+
+  Features:
+
+  - Swipe to switch multiple accounts (of multiple servers)
+  - Based on the design of the official Misskey Web client
+  - Highly customizable
+issues: https://github.com/poppingmoon/aria/issues
+license: AGPL-3.0
+source-code: https://github.com/poppingmoon/aria.git
+website: https://github.com/poppingmoon/aria
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+confinement: strict
+base: core22
+grade: stable
+
+slots:
+  dbus-aria:
+    interface: dbus
+    bus: session
+    name: com.poppingmoon.aria
+
+apps:
+  aria:
+    command: aria
+    extensions: [gnome]
+    plugs:
+      - home
+      - network
+    slots:
+      - dbus-aria
+
+parts:
+  aria:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart
+    build-packages:
+      - curl
+      - libsecret-1-dev
+    stage-packages:
+      - libsecret-1-0
